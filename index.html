@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="description" content="AccessAll - Assistive Technology for Blind, Deaf, and Mute Users">
+    <title>AccessAll - Assistive Technology Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Accessibility Settings Bar -->
+    <div class="settings-bar" role="banner">
+        <div class="container">
+            <h1 class="logo" aria-label="AccessAll Logo">
+                <i class="fas fa-universal-access" aria-hidden="true"></i>
+                <span>AccessAll</span>
+            </h1>
+            <div class="settings-controls">
+                <button id="contrastToggle" class="icon-btn" aria-label="Toggle High Contrast Mode" title="Toggle Contrast">
+                    <i class="fas fa-adjust"></i>
+                </button>
+                <button id="fontSizeToggle" class="icon-btn" aria-label="Toggle Font Size" title="Toggle Font Size">
+                    <i class="fas fa-text-height"></i>
+                </button>
+                <button id="voiceCommandBtn" class="icon-btn voice-command-btn" aria-label="Voice Commands" title="Voice Commands">
+                    <i class="fas fa-microphone-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <main class="dashboard-container" role="main">
+        <div class="container">
+            <!-- Status Indicators -->
+            <section class="status-indicators" aria-label="System Status">
+                <div class="status-card">
+                    <i class="fas fa-ear-listen"></i>
+                    <span class="status-label">Speech Recognition</span>
+                    <div id="hearStatus" class="status-dot inactive" aria-label="Speech Recognition Status: Inactive"></div>
+                </div>
+                <div class="status-card">
+                    <i class="fas fa-volume-high"></i>
+                    <span class="status-label">Text-to-Speech</span>
+                    <div id="speakStatus" class="status-dot inactive" aria-label="Text-to-Speech Status: Inactive"></div>
+                </div>
+                <div class="status-card">
+                    <i class="fas fa-cane"></i>
+                    <span class="status-label">Smart Stick</span>
+                    <div id="stickStatus" class="status-dot inactive" aria-label="Smart Stick Status: Inactive"></div>
+                </div>
+            </section>
+
+            <!-- Three Main Panels -->
+            <div class="panels-grid">
+                
+                <!-- HEAR Panel - Speech to Text -->
+                <section class="panel hear-panel" aria-labelledby="hearTitle">
+                    <div class="panel-header">
+                        <h2 id="hearTitle">
+                            <i class="fas fa-ear-listen" aria-hidden="true"></i>
+                            HEAR - Speech to Text
+                        </h2>
+                        <p class="panel-subtitle">For those who cannot speak</p>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <div class="mic-container">
+                            <button id="startHearing" class="action-btn pulse-btn" aria-label="Start Listening">
+                                <i class="fas fa-microphone"></i>
+                                <span>START LISTENING</span>
+                            </button>
+                            <button id="stopHearing" class="action-btn stop-btn" style="display:none;" aria-label="Stop Listening">
+                                <i class="fas fa-stop"></i>
+                                <span>STOP</span>
+                            </button>
+                        </div>
+                        
+                        <div class="transcript-display" id="transcriptDisplay" role="log" aria-live="polite" aria-label="Speech Recognition Output">
+                            <div class="placeholder-text">
+                                <i class="fas fa-microphone-slash"></i>
+                                <p>Click "START LISTENING" to begin speech recognition</p>
+                            </div>
+                        </div>
+                        
+                        <div class="action-controls">
+                            <button id="copyTranscript" class="secondary-btn" aria-label="Copy Text">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button id="clearTranscript" class="secondary-btn" aria-label="Clear Text">
+                                <i class="fas fa-trash"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SPEAK Panel - Text to Speech -->
+                <section class="panel speak-panel" aria-labelledby="speakTitle">
+                    <div class="panel-header">
+                        <h2 id="speakTitle">
+                            <i class="fas fa-volume-high" aria-hidden="true"></i>
+                            SPEAK - Text to Speech
+                        </h2>
+                        <p class="panel-subtitle">For those who cannot hear</p>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <div class="text-input-container">
+                            <label for="textToSpeak" class="visually-hidden">Enter text to speak</label>
+                            <textarea 
+                                id="textToSpeak" 
+                                class="text-input" 
+                                placeholder="Type your message here..."
+                                aria-label="Text to speak"
+                                rows="6"
+                            ></textarea>
+                        </div>
+                        
+                        <div class="voice-controls">
+                            <div class="control-group">
+                                <label for="voiceSelect">Voice:</label>
+                                <select id="voiceSelect" aria-label="Select Voice"></select>
+                            </div>
+                            <div class="control-group">
+                                <label for="rateControl">Speed: <span id="rateValue">1.0</span>x</label>
+                                <input type="range" id="rateControl" min="0.5" max="2" step="0.1" value="1" aria-label="Speech Rate">
+                            </div>
+                            <div class="control-group">
+                                <label for="pitchControl">Pitch: <span id="pitchValue">1.0</span></label>
+                                <input type="range" id="pitchControl" min="0.5" max="2" step="0.1" value="1" aria-label="Speech Pitch">
+                            </div>
+                        </div>
+                        
+                        <div class="action-controls">
+                            <button id="speakBtn" class="action-btn" aria-label="Speak Text">
+                                <i class="fas fa-play"></i>
+                                <span>SPEAK</span>
+                            </button>
+                            <button id="stopSpeakBtn" class="secondary-btn" aria-label="Stop Speaking">
+                                <i class="fas fa-stop"></i> Stop
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEE Panel - Smart Stick Sensor -->
+                <section class="panel see-panel" aria-labelledby="seeTitle">
+                    <div class="panel-header">
+                        <h2 id="seeTitle">
+                            <i class="fas fa-cane" aria-hidden="true"></i>
+                            SEE - Smart Stick Sensor
+                        </h2>
+                        <p class="panel-subtitle">For blind users navigation</p>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <div class="stick-controls">
+                            <button id="connectStick" class="action-btn" aria-label="Connect Smart Stick">
+                                <i class="fas fa-wifi"></i>
+                                <span>CONNECT STICK</span>
+                            </button>
+                            <button id="disconnectStick" class="secondary-btn" style="display:none;" aria-label="Disconnect Smart Stick">
+                                <i class="fas fa-plug"></i> Disconnect
+                            </button>
+                        </div>
+                        
+                        <div class="sensor-display" role="region" aria-live="polite" aria-label="Sensor Readings">
+                            <div class="sensor-item">
+                                <div class="sensor-label">
+                                    <i class="fas fa-gauge-high"></i>
+                                    Distance (cm)
+                                </div>
+                                <div class="sensor-value" id="distanceValue">--</div>
+                                <div class="sensor-bar">
+                                    <div class="sensor-bar-fill" id="distanceBar"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="sensor-item">
+                                <div class="sensor-label">
+                                    <i class="fas fa-triangle-exclamation"></i>
+                                    Obstacle Alert
+                                </div>
+                                <div class="sensor-value" id="obstacleValue">CLEAR</div>
+                            </div>
+                            
+                            <div class="sensor-item">
+                                <div class="sensor-label">
+                                    <i class="fas fa-road"></i>
+                                    Surface Type
+                                </div>
+                                <div class="sensor-value" id="surfaceValue">NORMAL</div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert-history">
+                            <h3>Alert History</h3>
+                            <div id="alertLog" class="alert-log" role="log" aria-live="polite"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Emergency SOS Button -->
+            <div class="sos-trigger-container">
+                <button id="testSOS" class="sos-trigger-btn" aria-label="Test Emergency SOS">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    TEST SOS ALERT
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- SOS Emergency Overlay (Hidden by default) -->
+    <div id="sosOverlay" class="sos-overlay" role="alert" aria-live="assertive" style="display:none;">
+        <div class="sos-content">
+            <div class="sos-header">
+                <i class="fas fa-siren-on"></i>
+                <h1>EMERGENCY SOS ACTIVATED</h1>
+            </div>
+            
+            <div class="sos-body">
+                <div class="emergency-icon">
+                    <i class="fas fa-ambulance"></i>
+                </div>
+                
+                <div class="emergency-message">
+                    <h2>HELP NEEDED!</h2>
+                    <p>Emergency signal received from Smart Stick</p>
+                </div>
+                
+                <div class="location-info">
+                    <h3><i class="fas fa-location-dot"></i> Location Information</h3>
+                    <div id="sosLocation" class="location-display">
+                        <i class="fas fa-spinner fa-spin"></i> Getting location...
+                    </div>
+                </div>
+                
+                <div class="emergency-contacts">
+                    <h3>Emergency Contacts</h3>
+                    <div class="contact-grid">
+                        <a href="tel:911" class="emergency-contact">
+                            <i class="fas fa-phone"></i>
+                            <span>Call 911</span>
+                        </a>
+                        <a href="sms:911" class="emergency-contact">
+                            <i class="fas fa-message"></i>
+                            <span>SMS 911</span>
+                        </a>
+                        <button id="shareLocation" class="emergency-contact">
+                            <i class="fas fa-share"></i>
+                            <span>Share Location</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="sos-actions">
+                    <button id="closeSOS" class="close-sos-btn">
+                        <i class="fas fa-check"></i> I'M SAFE - DISMISS ALERT
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements for Alerts -->
+    <audio id="sosAlarm" loop>
+        <source src="data:audio/wav;base64,UklGRhYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACA" type="audio/wav">
+    </audio>
+
+    <!-- Voice Command Help Modal -->
+    <div id="voiceCommandModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-microphone-alt"></i> Voice Commands</h2>
+                <button class="close-modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>Available Commands:</h3>
+                <ul class="command-list">
+                    <li><strong>"hear"</strong> or <strong>"listen"</strong> - Start speech recognition</li>
+                    <li><strong>"speak"</strong> or <strong>"talk"</strong> - Focus text-to-speech input</li>
+                    <li><strong>"stick"</strong> or <strong>"connect"</strong> - Connect smart stick</li>
+                    <li><strong>"help"</strong> or <strong>"emergency"</strong> - Trigger SOS</li>
+                    <li><strong>"contrast"</strong> - Toggle high contrast mode</li>
+                    <li><strong>"stop"</strong> - Stop current action</li>
+                </ul>
+                <button id="startVoiceCommand" class="action-btn">
+                    <i class="fas fa-microphone"></i> Start Voice Commands
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
