@@ -1049,3 +1049,107 @@ a:focus-visible {
     outline: 3px solid var(--accent-green);
     outline-offset: 4px;
 }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+#map {
+  width: 100%;
+  height: 350px;
+  margin: 20px 0;
+  border-radius: 12px;
+}
+
+/* Optional marker legend (future use) */
+.legend {
+  position: absolute;
+  bottom: 30px;
+  left: 10px;
+  
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+/* ===== Gesture to Voice Section ===== */
+
+.gesture-panel{
+    background:#1e293b;
+    padding:25px;
+    border-radius:12px;
+    margin-top:30px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,0.4);
+}
+
+.gesture-panel h2{
+    font-size:22px;
+    margin-bottom:15px;
+    font-weight:700;
+}
+
+/* Camera Video */
+
+#camera{
+    width:100%;
+    max-width:420px;
+    border-radius:10px;
+    border:3px solid #334155;
+    margin-top:10px;
+}
+
+/* Canvas (hand tracking output) */
+
+#output{
+    width:100%;
+    max-width:420px;
+    margin-top:10px;
+    border-radius:10px;
+    border:2px dashed #475569;
+}
+
+/* Start Button */
+
+#startGesture{
+    margin-top:15px;
+    padding:12px 25px;
+    background:#3b82f6;
+    border:none;
+    border-radius:8px;
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+#startGesture:hover{
+    background:#2563eb;
+}
+
+/* Gesture Detection Text */
+
+#gestureText{
+    margin-top:15px;
+    font-size:18px;
+    font-weight:600;
+    color:#22c55e;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    #camera,
+    #output{
+        max-width:100%;
+    }
+
+    .gesture-panel{
+        padding:20px;
+    }
+
+}
