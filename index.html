@@ -8,8 +8,18 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
 </head>
 <body>
+     
+ 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+  
     <!-- Accessibility Settings Bar -->
     <div class="settings-bar" role="banner">
         <div class="container">
@@ -30,7 +40,7 @@
             </div>
         </div>
     </div>
-
+<div id="map"></div>
     <!-- Main Dashboard Container -->
     <main class="dashboard-container" role="main">
         <div class="container">
@@ -78,6 +88,8 @@
                             </button>
                         </div>
                         
+
+                        
                         <div class="transcript-display" id="transcriptDisplay" role="log" aria-live="polite" aria-label="Speech Recognition Output">
                             <div class="placeholder-text">
                                 <i class="fas fa-microphone-slash"></i>
@@ -96,6 +108,7 @@
                     </div>
                 </section>
 
+                
                 <!-- SPEAK Panel - Text to Speech -->
                 <section class="panel speak-panel" aria-labelledby="speakTitle">
                     <div class="panel-header">
@@ -294,7 +307,12 @@
         </div>
     </div>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+
+
     <script src="main.js"></script>
 </body>
 </html>
-
