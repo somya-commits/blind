@@ -1056,8 +1056,85 @@ window.addEventListener('error', (event) => {
 
 window.addEventListener('unhandledrejection', (event) => {
     console.error('Unhandled promise rejection:', event.reason);
+}); 
+navigator.geolocation.getCurrentPosition((pos) => {
+  const lat = pos.coords.latitude;
+  const lng = pos.coords.longitude;
+
+  const map = L.map("map").setView([lat, lng], 15);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "© OpenStreetMap"
+  }).addTo(map);
+
+  // User marker
+  L.marker([lat, lng]).addTo(map).bindPopup("You are here");
+
+  const hour = new Date().getHours();
+
+  places.forEach(place => {
+    const crowd = getCrowdLevel(place.type, hour);
+    const color = crowdColor(crowd);
+
+    L.circle([place.lat, place.lng], {
+      radius: 150,
+      color: color,
+      fillColor: color,
+      fillOpacity: 0.4
+    })
+    .addTo(map)
+    .bindPopup(`
+      <b>${place.name}</b><br>
+      Crowd Level: <b style="color:${color}">${crowd.toUpperCase()}</b>
+    `);
+  });
 });
 
+
+const places = [
+  { name: "Main Bus Stand", type: "bus", lat: 26.2183, lng: 78.1828 },
+  { name: "City Hospital", type: "hospital", lat: 26.2201, lng: 78.1805 },
+  { name: "Local Market", type: "market", lat: 26.2169, lng: 78.1852 }
+];
+
+function getCrowdLevel(type, hour) {
+  if (type === "bus" && (hour >= 8 && hour <= 10 || hour >= 17 && hour <= 20))
+    return "high";
+
+  if (type === "market" && hour >= 18 && hour <= 21)
+    return "high";
+
+  if (type === "hospital" && hour >= 9 && hour <= 13)
+    return "medium";
+
+  return "low";
+}
+
+function crowdColor(level) {
+  if (level === "high") return "red";
+  if (level === "medium") return "orange";
+  return "green";
+}
+
+const hour = new Date().getHours();
+
+places.forEach(place => {
+  const crowd = getCrowdLevel(place.type, hour);
+  const color = crowdColor(crowd);
+
+  L.circle([place.lat, place.lng], {
+    radius: 200,
+    color: color,
+    fillColor: color,
+    fillOpacity: 0.4
+  })
+  .addTo(map)
+  .bindPopup(`
+    <b>${place.name}</b><br>
+    Type: ${place.type}<br>
+    Crowd: <b style="color:${color}">${crowd.toUpperCase()}</b>
+  `);
+});
 // ========================================
 // END OF ACCESSALL MAIN JAVASCRIPT
 // ========================================
